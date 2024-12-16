@@ -1,8 +1,7 @@
-package com.treeify3;
+package com.treeify3.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.treeify3.entity.TreeEntity;
 import org.junit.jupiter.api.Test;
 
 public class TreeEntityTest {

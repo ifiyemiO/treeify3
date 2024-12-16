@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binary Search Tree</title>
+</head>
+<body>
+<h1>Create Binary Search Tree</h1>
+<form id="treeForm">
+    <label for="numbers">Enter Numbers (comma-separated):</label>
+    <input type="text" id="numbers" name="numbers" required />
+    <button type="button" onclick="submitNumbers()">Submit</button>
+    <button type="button" onclick="showPreviousTrees()">
+        Show Previous Trees
+    </button>
+</form>
+<div id="result"></div>
+<div id="previousTrees"></div>
+<script>
+    async function submitNumbers() {
+        const numbers = document.getElementById("numbers").value;
+        const response = await fetch(
+            "http://localhost:8080/api/process-numbers?numbers=" + numbers,
+            { method: "POST" }
+        );
+        const data = await response.json();
+        document.getElementById("result").innerHTML = `<pre>${JSON.stringify(
+            data.treeStructure,
+            null,
+            2
+        )}</pre>`;
+    }
+
+    async function showPreviousTrees() {
+        const response = await fetch(
+            "http://localhost:8080/api/previous-trees"
+        );
+        const data = await response.json();
+        const treesHtml = data
+            .map(
+                (tree) => `
+        <div>
+            <p>Input Numbers: ${tree.inputNumbers}</p>
+            <pre>${JSON.stringify(
+                    JSON.parse(tree.treeStructure),
+                    null,
+                    2
+                )}</pre>
+        </div>
+    `
+            )
+            .join("");
+        document.getElementById("previousTrees").innerHTML = treesHtml;
+    }
+</script>
+</body>
+</html>
